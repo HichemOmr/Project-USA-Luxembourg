@@ -124,7 +124,7 @@ freq(raster1998)#
 #[2,]     1  21621 #urban
 #[3,]    NA  78260
 
-r.agg_78 <- aggregate(raster1978, fact=5, fun=sum, na.rm=TRUE) # 10
+r.agg_78 <- aggregate(raster1978, fact=5, fun=sum, na.rm=TRUE) # it aggregates at 500m
 
 r.agg_98 <- aggregate(raster1998, fact=5, fun=sum, na.rm=TRUE) #so if 25 then 100% urban, 
 #could use mean!!
@@ -135,23 +135,23 @@ plot(r.agg_98)
 histogram(r.agg_98)
 histogram(raster1998)
 
-data.agg_78 <- rasterToPoints(r.agg_78) #? not sure why we are doing this right now
+data.agg_78 <- rasterToPoints(r.agg_78) #? not sure why we are doing this right now; we may delete these 2 lines  
 head(data.agg_78)
 
-data.agg_98 <- rasterToPoints(r.agg_98) #this is matrix...
+data.agg_98 <- rasterToPoints(r.agg_98) #this is matrix...yes it is a matrix, we may delete these 3 lines
 head(data.agg_98)
 colnames(data.agg_78) #need comments!
 
-r78 = data.agg_78; #make a copy?
+r78 = data.agg_78; #make a copy?, r78 and r98 will be used hereafter to save the ML land use data
 r98 = data.agg_98;
 
 ### Reclassify data, column 3 is the landuse final
 #if 25 then all the pixels are of hte same class other not (ML)
 #this should be done directly in the raster package classify function
-
+# in ML land use data, we use these codes: 1 for urban, 2 for mixed use (ML) and 3 for non-urban
 for (i in 1:nrow(data.agg_78)){
 if ( (data.agg_78[i,3]!=0) && (data.agg_78[i,3]!=25) ) # ML 
-r78[i,3] = 2 # it means mixed class ok
+r78[i,3] = 2 # it means mixed class ok; yes it is
 }
 
 for (i in 1:nrow(data.agg_98)){
